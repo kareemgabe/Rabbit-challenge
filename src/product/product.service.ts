@@ -1,32 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
-import { CreateProductDto } from './dto/create-product.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { GetAllProductsDTO } from './dto/get-all-products.dto';
 import { ProductDTO } from './dto/product.dto';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    private readonly productsRepository: ProductRepository,
-    private prismaService: PrismaService,
-  ) {}
+  constructor(private readonly productsRepository: ProductRepository) {}
 
-  async getAllProducts(filters: GetAllProductsDTO): Promise<ProductDTO[]> {
-    if (filters.categories && filters.categories.length) {
-      const products = [];
-      for (let i = 0; i < filters.categories.length; i++) {
-        products.push(
-          await this.prismaService.product.findFirst({
-            where: { category: filters.categories[i] },
-          }),
-        );
-      }
-    }
-    return this.prismaService.product.findMany();
+  async getAllProducts(filters: any): Promise<ProductDTO[]> {
+    const { categories, page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc' } = filters;
+
+    const skip = (page - 1) * limit;
+
+    return this.productsRepository.findAll({
+      categories,
+      skip,
+      take: limit,
+      orderBy: { [sortBy]: sortOrder },
+    });
   }
-
-  async getProductById(id: number): Promise<ProductDTO> {
-    return this.productsRepository.findById(id);
+  async getProductById(id: number): Promise<ProductDTO | null> {
+    const product = await this.productsRepository.findById(id);
+    if (!product) {
+      throw new Error(`Product with ID ${id} not found`);
+    }
+    return product;
   }
 }

@@ -6,17 +6,36 @@ import { Product } from '@prisma/client';
 export class ProductRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(): Promise<Product[]> {
-    return this.prisma.product.findMany();
+  async findAll(filters: any): Promise<Product[]> {
+    const { categories, skip, take, orderBy } = filters;
+
+    console.log('Filters received:', filters); // Log filters received
+    console.log('Categories:', categories);
+    console.log('Skip:', skip);
+    console.log('Take:', take);
+    console.log('OrderBy:', orderBy);
+
+    const products = await this.prisma.product.findMany({
+      where: categories ? { category: { in: categories } } : undefined,
+      skip,
+      take,
+      orderBy,
+    });
+
+    console.log('Products found:', products); // Log the fetched products
+
+    return products;
   }
 
   async findById(id: number): Promise<Product | null> {
-    return this.prisma.product.findUnique({
+    console.log('Finding product by ID:', id); // Log the ID being searched
+
+    const product = await this.prisma.product.findUnique({
       where: { id },
     });
-  }
 
-  async create(data: { name: string; category: string }): Promise<Product> {
-    return this.prisma.product.create({ data });
+    console.log('Product found:', product); // Log the fetched product or null
+
+    return product;
   }
 }

@@ -12,8 +12,15 @@ export class ProductController {
     return this.productsService.getAllProducts(filters);
   }
 
-  @Get(':id')
-  async getProductById(@Param('id') id: string) {
-    return this.productsService.getProductById(Number(id));
+ @Get(':id')
+async getProductById(@Param('id') id: string) {
+  const numericId = Number(id);
+  
+  if (isNaN(numericId)) {
+    throw new Error('Invalid ID format. ID must be a numeric value.');
   }
+
+  return this.productsService.getProductById(numericId);
 }
+}
+

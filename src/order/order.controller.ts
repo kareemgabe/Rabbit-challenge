@@ -1,13 +1,23 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller, Get, Query, Post, Body } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDTO } from './dto/create-order-dto';
 
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
+  
+  @Get('top-products')
+  async getTopProducts(@Query('area') area: string) {
+    if (!area) {
+      throw new Error('Area is required');
+    }
+    return this.orderService.getTopProducts(area);
+  }
 
-  @Post()
-  async create(@Body() data: CreateOrderDTO) {
-    return this.orderService.create(data)
+  @Post('create')
+  async createOrder(@Body() orderData: any) {
+    if (!orderData) {
+      throw new Error('Order data is required');
+    }
+    return this.orderService.createOrder(orderData);
   }
 }

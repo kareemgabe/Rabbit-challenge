@@ -1,1 +1,5 @@
-export class OrderDTO {}
+export class GetAllProductsDto {
+    filters?: any;
+    sort?: any;
+  }
+  
