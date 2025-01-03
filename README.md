@@ -1,6 +1,8 @@
 Environment Setup:
 Clone the repository.
+
 Run yarn install to install the necessary dependencies.
+
 Connect to your local PostgreSQL database.
 Run yarn prisma:generate to generate Prisma client.
 Run yarn migrate:dev to apply database migrations.
