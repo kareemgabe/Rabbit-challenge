@@ -20,7 +20,8 @@ Don't forget to add the .env file at the root path
 
   .env:
 
-   DATABASE_URL=// Use your local database here
+   DATABASE_URL=DATABASE_URL="postgresql://postgres:12345test@localhost:5432/rabbittask?schema=public" 
+
 
    PUSHOVER_USER_KEY=u6jjng5y1sfp1yrtqrgvpixp4rv3k8
 
