@@ -13,13 +13,22 @@ Run yarn seed to seed the database with initial data.
 
 Start the development server with yarn run start:dev.
 
-Top 10 Most Frequently Ordered Products API
+Run yarn test   to test cases
+
+
+Don't forget to add the .env file at the root path
 
   .env:
 
    DATABASE_URL=// Use your local database here
+
    PUSHOVER_USER_KEY=u6jjng5y1sfp1yrtqrgvpixp4rv3k8
+
    PUSHOVER_API_TOKEN=a1nthoomn4ywhi7847sfeyn465kfny
+
+Top 10 Most Frequently Ordered Products API
+
+
 
 
 This API provides a list of the top 10 most frequently ordered products in a specific area. By querying the API with an area parameter, users can retrieve a sorted list of products based on the total number of orders in that area. Each product in the response includes details such as its unique ID, name, category, and the number of orders it has received. This data helps businesses with inventory management, marketing strategies, and product recommendations, enabling data-driven decision-making.
@@ -33,8 +42,13 @@ http://localhost:8080/order/top-products?area=Giza
 Optimizing a Poorly Implemented List Products API:
 When building scalable applications, especially those involving databases and large datasets, performance optimization is key. Here, we compare two approaches for fetching products from the database with filters such as categories, pagination, and sorting. We’ll highlight the key differences between the two and explain why the second implementation is better in terms of efficiency, scalability, and performance.
 
+
+
 First Implementation: Multiple Queries for Each Category
 typescript
+
+
+
 
 
 
@@ -51,6 +65,9 @@ async getAllProducts(filters: GetAllProductsDTO): Promise<ProductDTO[]> {
   }
   return this.prismaService.product.findMany();
 }
+
+
+
 
 
 
@@ -155,6 +172,8 @@ Potential Caching Strategies:
 Product Listings: Cache product listings for category filters or specific queries to prevent redundant database queries.
 Frequently Accessed Categories: Cache results of category-based filters for a certain time (e.g., 1 hour) to reduce repeated load.
 Using caching in combination with the second implementation can significantly improve both response time and scalability by reducing unnecessary database queries during peak load times
+
+
 
 
 
